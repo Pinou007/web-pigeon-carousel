@@ -1,0 +1,53 @@
+{
+  "name": "pigeon-carousel",
+  "version": "1.0.0",
+  "description": "Application Pigeon Carousel - Le paradis des pigeons par Pinou007",
+  "main": "main.js",
+  "author": "Pinou007",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build:installer": "electron-builder --win nsis",
+    "build:pc": "electron-builder --win nsis",
+    "build:mobile": "node build-apk.js",
+    "build:all": "npm run build:pc && npm run build:mobile",
+    "package:pc": "electron-packager . Pigeon --platform=win32 --arch=x64 --icon=img/icon.ico --out=dist --overwrite --prune=true"
+  },
+  "build": {
+    "appId": "fr.pinou007.pigeon",
+    "productName": "Pigeon",
+    "directories": {
+      "output": "dist/installers"
+    },
+    "files": [
+      "index.html",
+      "style.css",
+      "script.js",
+      "main.js",
+      "img/**/*",
+      "!dist/**/*",
+      "!android/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "img/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Pigeon - Pinou007"
+    }
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.3.0",
+    "electron": "^44.5.1",
+    "electron-builder": "^26.0.12",
+    "jimp": "^1.6.1",
+    "png-to-ico": "^3.0.2",
+    "qrcode": "^1.5.4"
+  }
+}

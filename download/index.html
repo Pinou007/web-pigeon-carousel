@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Télécharger Pigeon - Applications Mobile & PC</title>
+    <link rel="icon" type="image/png" href="../img/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0b0d14;
+            color: #f1f5f9;
+            font-family: 'Inter', -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+        }
+
+        .download-card {
+            background-color: #151924;
+            border: 1px solid #282f42;
+            border-radius: 16px;
+            max-width: 680px;
+            width: 100%;
+            padding: 36px 32px;
+            text-align: center;
+        }
+
+        .app-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 18px;
+            margin-bottom: 16px;
+            object-fit: cover;
+        }
+
+        h1 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.85rem;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin-bottom: 28px;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 580px) {
+            .platforms-grid {
+                grid-template-columns: 1fr;
+            }
+            .download-card {
+                padding: 24px 18px;
+            }
+        }
+
+        .platform-box {
+            background-color: #1c2233;
+            border: 1px solid #2d374e;
+            border-radius: 14px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .platform-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            margin-bottom: 6px;
+            color: #ffffff;
+        }
+
+        .platform-desc {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+
+        .btn-dl {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: #ffffff;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-android {
+            background-color: #15803d;
+        }
+        .btn-android:hover {
+            background-color: #16a34a;
+        }
+
+        .btn-windows {
+            background-color: #1d4ed8;
+        }
+        .btn-windows:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-zip {
+            background-color: #334155;
+            color: #cbd5e1;
+            margin-top: 8px;
+            font-size: 0.82rem;
+            padding: 8px 12px;
+        }
+        .btn-zip:hover {
+            background-color: #475569;
+            color: #ffffff;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin-top: 10px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .qr-section {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #282f42;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .qr-img {
+            width: 180px;
+            height: 180px;
+            background: #ffffff;
+            padding: 6px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .qr-text {
+            font-size: 0.82rem;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <main class="download-card">
+        <img src="../img/logo.png" alt="Logo Pigeon" class="app-logo">
+        <h1>Télécharger l'Application Pigeon</h1>
+        <p class="subtitle">
+            Profitez du carrousel de pigeons en boucle partout sur votre smartphone Android ou sur votre ordinateur Windows !
+        </p>
+
+        <div class="platforms-grid">
+            <!-- Android -->
+            <div class="platform-box">
+                <svg viewBox="0 0 24 24" width="36" height="36" fill="#4ade80">
+                    <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.0818 12 8.0818s-3.5902.3298-5.1368.8679L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.689-7.5743-6.1185-9.4396"/>
+                </svg>
+                <div class="platform-title">Android</div>
+                <div class="platform-desc">Fichier APK prêt à installer pour smartphones et tablettes Android.</div>
+                <a href="../dist/installers/Pigeon-Mobile.apk" download="Pigeon-Mobile.apk" class="btn-dl btn-android">
+                    Télécharger l'APK (10 MB)
+                </a>
+            </div>
+
+            <!-- Windows PC -->
+            <div class="platform-box">
+                <svg viewBox="0 0 24 24" width="36" height="36" fill="#60a5fa">
+                    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.801"/>
+                </svg>
+                <div class="platform-title">Windows PC</div>
+                <div class="platform-desc">Installateur officiel Windows (.exe) avec raccourcis et icône dédiée.</div>
+                <a href="../dist/installers/Pigeon%20Setup%201.0.0.exe" download="Pigeon Setup 1.0.0.exe" class="btn-dl btn-windows">
+                    Télécharger l'Installateur (122 MB)
+                </a>
+                <a href="../dist/installers/Pigeon-PC-Windows-x64.zip" download="Pigeon-PC-Windows-x64.zip" class="btn-dl btn-zip">
+                    Version Portable (.zip)
+                </a>
+            </div>
+        </div>
+
+        <div>
+            <a href="../index.html" class="back-link">
+                ← Retourner au Paradis des Pigeons (Web)
+            </a>
+        </div>
+
+        <div class="qr-section">
+            <img src="../img/qrcode.png" alt="QR Code Téléchargement" class="qr-img">
+            <p class="qr-text">Partagez ce QR Code pour faire découvrir l'application aux amoureux des pigeons !</p>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,6 @@
+node_modules/
+android/bin/
+android/*.keystore
+dist/installers/win-unpacked/
+dist/Pigeon-win32-x64/
+*.log
