@@ -183,6 +183,12 @@ body.is-afk {
     color: #ffffff !important;
 }
 
+/* Masquer le bouton de téléchargement dans l'application Desktop et Mobile */
+body.is-native-app #downloadNavBtn,
+body.is-native-app #downloadNavDivider {
+    display: none !important;
+}
+
 .nav-divider {
     width: 1px;
     height: 20px;

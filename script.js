@@ -411,9 +411,31 @@ function attachEventListeners() {
 }
 
 // ==========================================================================
+// Détection du mode Application (Desktop Electron ou Mobile Android)
+// ==========================================================================
+function checkIsApp() {
+    const isFile = window.location.protocol === 'file:';
+    const isElectron = navigator.userAgent.toLowerCase().includes('electron');
+    const isPigeonApp = navigator.userAgent.includes('PigeonApp');
+    const isAndroidWebView = /Android.*Version\/[0-9\.]+/i.test(navigator.userAgent) && isFile;
+    return isFile || isElectron || isPigeonApp || isAndroidWebView;
+}
+
+function handleAppMode() {
+    if (checkIsApp()) {
+        document.body.classList.add('is-native-app');
+        const dlBtn = document.getElementById('downloadNavBtn');
+        const dlDivider = document.getElementById('downloadNavDivider');
+        if (dlBtn) dlBtn.style.display = 'none';
+        if (dlDivider) dlDivider.style.display = 'none';
+    }
+}
+
+// ==========================================================================
 // Initialisation
 // ==========================================================================
 window.addEventListener('DOMContentLoaded', () => {
+    handleAppMode();
     initAudioControls();
     initAfkManager();
     attachEventListeners();

@@ -50,6 +50,7 @@ public class MainActivity extends Activity {
 
         webView = new WebView(this);
         WebSettings settings = webView.getSettings();
+        settings.setUserAgentString(settings.getUserAgentString() + " PigeonApp");
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
