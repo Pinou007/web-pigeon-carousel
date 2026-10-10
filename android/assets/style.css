@@ -1,5 +1,6 @@
 /* ==========================================================================
-   Pigeon Carousel - Style Épuré & Sobre (Sans Glow, Sans Dégradé Fantaisie)
+   Pigeon Carousel - Style Moderne & Élégant (Barre Blanche & AFK Auto-Hide)
+   Auteur: Pinou007
    ========================================================================== */
 
 *, *::before, *::after {
@@ -9,19 +10,20 @@
 }
 
 :root {
-    --bg-dark: #0b0d14;
-    --nav-bg: #151924;
-    --nav-border: #282f42;
-    --btn-bg: #222838;
-    --btn-hover: #2d354a;
-    --primary: #2563eb;
-    --primary-hover: #1d4ed8;
-    --android-green: #15803d;
-    --android-hover: #16a34a;
-    --text-main: #f1f5f9;
-    --text-muted: #94a3b8;
+    --bg-dark: #0a0b10;
+    --primary-purple: #7c3aed;
+    --primary-gradient: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+    --nav-white-bg: rgba(255, 255, 255, 0.94);
+    --nav-white-border: rgba(255, 255, 255, 0.9);
+    --nav-btn-bg: #f1f5f9;
+    --nav-btn-border: #e2e8f0;
+    --nav-text-main: #0f172a;
+    --nav-text-muted: #64748b;
+    --card-bg: #141824;
+    --card-border: #262e42;
     --radius-pill: 9999px;
-    --radius-card: 14px;
+    --radius-card: 18px;
+    --shadow-nav: 0 14px 40px rgba(0, 0, 0, 0.35), 0 2px 10px rgba(0, 0, 0, 0.12);
 }
 
 body, html {
@@ -30,9 +32,14 @@ body, html {
     overflow: hidden;
     background: var(--bg-dark);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color: var(--text-main);
+    color: #ffffff;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    transition: cursor 0.2s ease;
+}
+
+body.is-afk {
+    cursor: none;
 }
 
 /* ==========================================================================
@@ -48,18 +55,18 @@ body, html {
 
 .background {
     position: absolute;
-    top: -20px;
-    left: -20px;
-    right: -20px;
-    bottom: -20px;
+    top: -24px;
+    left: -24px;
+    right: -24px;
+    bottom: -24px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    filter: blur(20px) brightness(0.6);
+    filter: blur(28px) brightness(0.55);
     z-index: 1;
     opacity: 1;
-    transform: scale(1.05);
-    transition: opacity 1.5s ease;
+    transform: scale(1.08);
+    transition: opacity 1.2s ease;
 }
 
 .foreground {
@@ -72,94 +79,128 @@ body, html {
     object-fit: contain;
     z-index: 2;
     opacity: 1;
-    border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-    transition: opacity 1.5s ease;
+    border-radius: 12px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.75);
+    transition: opacity 1.2s ease;
     pointer-events: none;
 }
 
 /* ==========================================================================
-   Barre de Navigation Inférieure (Sobre, Propre, Sans Glow)
+   Barre de Navigation Inférieure Blanche avec Auto-Hide AFK
    ========================================================================== */
 .bottom-nav-container {
     position: fixed;
-    bottom: max(16px, env(safe-area-inset-bottom, 16px));
+    bottom: max(20px, env(safe-area-inset-bottom, 20px));
     left: 0;
     right: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
-    padding: 0 12px;
+    padding: 0 16px;
+    pointer-events: none;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* État AFK : la barre disparaît vers le bas */
+.bottom-nav-container.afk {
+    opacity: 0;
+    transform: translateY(45px);
     pointer-events: none;
 }
 
 .bottom-nav {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 10px;
-    background: var(--nav-bg);
-    border: 1px solid var(--nav-border);
+    gap: 7px;
+    padding: 7px 12px;
+    background: var(--nav-white-bg);
+    backdrop-filter: blur(24px) saturate(190%);
+    -webkit-backdrop-filter: blur(24px) saturate(190%);
+    border: 1px solid var(--nav-white-border);
     border-radius: var(--radius-pill);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--shadow-nav);
     pointer-events: auto;
     max-width: 98vw;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .nav-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    background: var(--btn-bg);
-    border: 1px solid transparent;
-    color: var(--text-main);
+    gap: 7px;
+    background: var(--nav-btn-bg);
+    border: 1px solid var(--nav-btn-border);
+    color: var(--nav-text-main);
     padding: 8px 14px;
     border-radius: var(--radius-pill);
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-size: 0.88rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
+    text-decoration: none;
+    transition: all 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
     white-space: nowrap;
     outline: none;
+    user-select: none;
 }
 
 .nav-btn:hover {
-    background: var(--btn-hover);
-    border-color: #3b455e;
+    background: #ffffff;
+    color: var(--primary-purple);
+    border-color: rgba(124, 58, 237, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.15);
 }
 
 .nav-btn:active {
-    background: #1a1f2c;
+    transform: translateY(0) scale(0.96);
 }
 
 .nav-btn-compact {
     padding: 8px;
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
 }
 
 .nav-icon {
-    width: 17px;
-    height: 17px;
+    width: 18px;
+    height: 18px;
     flex-shrink: 0;
+    stroke: currentColor;
 }
 
 .nav-label {
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-size: 0.86rem;
+    font-weight: 600;
+}
+
+.nav-btn-download {
+    background: var(--primary-gradient);
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.35);
+}
+
+.nav-btn-download:hover {
+    background: linear-gradient(135deg, #6d28d9 0%, #4f46e5 100%);
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+    transform: translateY(-2px);
 }
 
 .nav-divider {
     width: 1px;
-    height: 20px;
-    background: #282f42;
-    margin: 0 2px;
+    height: 22px;
+    background: #e2e8f0;
+    margin: 0 3px;
 }
 
-/* Contrôle du volume musique */
+/* Contrôle du Volume */
 .volume-control-wrapper {
     display: flex;
     align-items: center;
@@ -170,41 +211,54 @@ body, html {
 .volume-slider-box {
     display: flex;
     align-items: center;
-    width: 75px;
+    width: 80px;
 }
 
 input[type="range"]#volumeSlider {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: 4px;
-    background: #334155;
-    border-radius: 2px;
+    height: 5px;
+    background: #cbd5e1;
+    border-radius: 4px;
     outline: none;
     cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+input[type="range"]#volumeSlider:hover {
+    background: #94a3b8;
 }
 
 input[type="range"]#volumeSlider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 14px;
-    height: 14px;
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
-    background: var(--primary);
+    background: var(--primary-purple);
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(124, 58, 237, 0.4);
     cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+input[type="range"]#volumeSlider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
 }
 
 input[type="range"]#volumeSlider::-moz-range-thumb {
-    width: 14px;
-    height: 14px;
-    border: none;
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
-    background: var(--primary);
+    background: var(--primary-purple);
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(124, 58, 237, 0.4);
     cursor: pointer;
 }
 
 /* ==========================================================================
-   Modale de Contact
+   Modale de Contact Pinou007
    ========================================================================== */
 .modal-overlay {
     position: fixed;
@@ -212,14 +266,16 @@ input[type="range"]#volumeSlider::-moz-range-thumb {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(8, 10, 18, 0.78);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 300;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.25s ease;
     padding: 16px;
 }
 
@@ -230,86 +286,121 @@ input[type="range"]#volumeSlider::-moz-range-thumb {
 
 .modal-card {
     position: relative;
-    background: var(--nav-bg);
-    border: 1px solid var(--nav-border);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     border-radius: var(--radius-card);
-    width: 420px;
+    width: 520px;
     max-width: 100%;
-    padding: 28px 24px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    padding: 30px 26px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
     text-align: center;
+    color: #f8fafc;
+    animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes modalPop {
+    from {
+        transform: scale(0.92) translateY(10px);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
 }
 
 .modal-close-btn {
     position: absolute;
-    top: 14px;
-    right: 14px;
-    background: #222838;
-    border: none;
-    color: var(--text-muted);
-    width: 32px;
-    height: 32px;
+    top: 16px;
+    right: 16px;
+    background: #1e2435;
+    border: 1px solid #2f3850;
+    color: #94a3b8;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    transition: all 0.15s ease;
 }
 
 .modal-close-btn:hover {
-    background: #2d354a;
+    background: #2b344c;
     color: #ffffff;
+    transform: rotate(90deg);
 }
 
 .modal-icon-badge {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 14px;
-    border-radius: 14px;
-    background: #1c2233;
-    border: 1px solid #2d374e;
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 12px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(99, 102, 241, 0.1));
+    border: 1px solid rgba(124, 58, 237, 0.35);
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 8px 20px rgba(124, 58, 237, 0.25);
 }
 
 .modal-pigeon-logo {
-    width: 50px;
-    height: 50px;
-    border-radius: 10px;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
     object-fit: cover;
 }
 
 .modal-header h2 {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 1.45rem;
+    font-size: 1.55rem;
     color: #ffffff;
     margin-bottom: 6px;
+    letter-spacing: -0.5px;
 }
 
 .modal-subtitle {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    line-height: 1.4;
-    margin-bottom: 20px;
+    font-size: 0.92rem;
+    color: #94a3b8;
+    line-height: 1.45;
+    margin-bottom: 22px;
 }
 
+.modal-subtitle strong {
+    color: #a78bfa;
+}
+
+/* Boîte E-mail */
 .email-box {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #1c2233;
-    border: 1px solid #2d374e;
-    border-radius: 8px;
-    padding: 10px 12px;
+    background: #1b2133;
+    border: 1px solid #2e3752;
+    border-radius: 12px;
+    padding: 11px 14px;
     margin-bottom: 18px;
 }
 
+.email-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+}
+
+.email-icon {
+    font-size: 1.1rem;
+}
+
 .email-text {
-    font-family: monospace;
-    font-size: 0.98rem;
+    font-family: 'Inter', monospace;
+    font-size: 0.95rem;
     font-weight: 600;
-    color: #60a5fa;
+    color: #93c5fd;
     user-select: all;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -318,19 +409,22 @@ input[type="range"]#volumeSlider::-moz-range-thumb {
 .copy-btn {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    background: #2563eb;
+    gap: 6px;
+    background: var(--primary-purple);
     border: none;
     color: #ffffff;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 0.8rem;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
     font-weight: 600;
     cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
 }
 
 .copy-btn:hover {
-    background: #1d4ed8;
+    background: #6d28d9;
+    transform: translateY(-1px);
 }
 
 .copy-btn.copied {
@@ -342,6 +436,100 @@ input[type="range"]#volumeSlider::-moz-range-thumb {
     height: 14px;
 }
 
+/* Grille des Réseaux Sociaux Pinou007 */
+.socials-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.social-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #191f2f;
+    border: 1px solid #28324a;
+    border-radius: 12px;
+    padding: 10px 12px;
+    text-decoration: none;
+    color: #f8fafc;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.social-card:hover {
+    background: #20283d;
+    border-color: rgba(124, 58, 237, 0.45);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.social-icon-wrapper {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.emoji-picto {
+    font-size: 1.1rem;
+}
+
+/* Couleurs par réseau social */
+.social-website .social-icon-wrapper { background: rgba(245, 158, 11, 0.18); color: #f59e0b; }
+.social-youtube .social-icon-wrapper { background: rgba(239, 68, 68, 0.18); color: #ef4444; }
+.social-instagram .social-icon-wrapper { background: rgba(236, 72, 153, 0.18); color: #ec4899; }
+.social-twitter .social-icon-wrapper { background: rgba(14, 165, 233, 0.18); color: #0ea5e9; }
+.social-discord .social-icon-wrapper { background: rgba(88, 101, 242, 0.18); color: #5865f2; }
+.social-github .social-icon-wrapper { background: rgba(255, 255, 255, 0.12); color: #f1f5f9; }
+.social-spotify .social-icon-wrapper { background: rgba(16, 185, 129, 0.18); color: #10b981; }
+
+.social-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: hidden;
+    flex-grow: 1;
+}
+
+.social-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+}
+
+.social-handle {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.social-arrow {
+    color: #64748b;
+    flex-shrink: 0;
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.social-card:hover .social-arrow {
+    transform: translate(2px, -2px);
+    color: #a78bfa;
+}
+
+.modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
 .modal-action-btn {
     display: inline-flex;
     align-items: center;
@@ -349,36 +537,42 @@ input[type="range"]#volumeSlider::-moz-range-thumb {
     gap: 8px;
     width: 100%;
     padding: 12px 18px;
-    font-size: 0.92rem;
+    font-size: 0.94rem;
     font-weight: 600;
-    border-radius: 8px;
-    background: #334155;
+    border-radius: 10px;
+    background: var(--primary-gradient);
     color: #ffffff;
     text-decoration: none;
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.35);
+    transition: all 0.2s ease;
 }
 
 .modal-action-btn:hover {
-    background: #475569;
+    filter: brightness(1.1);
+    transform: translateY(-1px);
 }
 
 /* ==========================================================================
-   Toast de notification
+   Toast de Notification
    ========================================================================== */
 .toast-notification {
     position: fixed;
-    bottom: 80px;
+    bottom: 85px;
     left: 50%;
     transform: translateX(-50%) translateY(15px);
-    background: #15803d;
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     color: #ffffff;
-    padding: 8px 18px;
+    padding: 9px 20px;
     border-radius: var(--radius-pill);
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     font-weight: 600;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     opacity: 0;
     pointer-events: none;
-    transition: all 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 400;
 }
 
@@ -388,22 +582,10 @@ input[type="range"]#volumeSlider::-moz-range-thumb {
 }
 
 /* ==========================================================================
-   Pop-up de Téléchargement (QR Code Grand Format, Sans Glow)
+   Pop-up de Téléchargement Promo
    ========================================================================== */
 #popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 720px;
-    max-width: 92%;
-    background: #151924;
-    color: #fff;
-    border: 1px solid #282f42;
-    border-radius: var(--radius-card);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
     z-index: 250;
-    display: none;
 }
 
 .popup-content {
@@ -411,7 +593,10 @@ input[type="range"]#volumeSlider::-moz-range-thumb {
     flex-direction: row;
     align-items: center;
     gap: 28px;
-    padding: 28px;
+    padding: 30px;
+    width: 740px;
+    max-width: 92%;
+    text-align: left;
 }
 
 .popup-left {
@@ -422,47 +607,40 @@ input[type="range"]#volumeSlider::-moz-range-thumb {
 }
 
 .large-qrcode {
-    width: 220px;
-    height: 220px;
+    width: 200px;
+    height: 200px;
     background: #ffffff;
     padding: 8px;
-    border-radius: 10px;
-    border: 1px solid #cbd5e1;
+    border-radius: 14px;
+    border: 2px solid #334155;
     display: block;
     cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .large-qrcode:hover {
-    transform: scale(1.02);
-    transition: transform 0.15s ease;
+    transform: scale(1.03);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
 }
 
 .qr-hint {
     margin-top: 8px;
     font-size: 0.78rem;
-    color: var(--text-muted);
-    font-weight: 500;
-}
-
-.popup-right {
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    color: #94a3b8;
+    text-align: center;
 }
 
 .popup-right h2 {
     font-family: 'Archivo Black', sans-serif;
+    font-size: 1.4rem;
     margin-bottom: 10px;
-    font-size: 1.35rem;
     color: #ffffff;
-    line-height: 1.25;
 }
 
 .popup-right p {
     font-size: 0.92rem;
-    color: var(--text-muted);
-    line-height: 1.45;
+    color: #94a3b8;
+    line-height: 1.5;
     margin-bottom: 20px;
 }
 
@@ -480,51 +658,66 @@ input[type="range"]#volumeSlider::-moz-range-thumb {
     text-decoration: none;
     color: white;
     padding: 11px 18px;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 0.88rem;
     font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-}
-
-.btn-android {
-    background-color: var(--android-green);
-}
-.btn-android:hover {
-    background-color: var(--android-hover);
+    transition: all 0.15s ease;
 }
 
 .btn-windows {
-    background-color: var(--primary);
+    background-color: #2563eb;
 }
 .btn-windows:hover {
-    background-color: var(--primary-hover);
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.btn-android {
+    background-color: #16a34a;
+}
+.btn-android:hover {
+    background-color: #15803d;
+    transform: translateY(-1px);
+}
+
+.btn-linux {
+    background-color: #d97706;
+}
+.btn-linux:hover {
+    background-color: #b45309;
+    transform: translateY(-1px);
 }
 
 .btn-secondary {
-    background: #2a3142;
-    color: var(--text-main);
+    background: #252d40;
+    color: #cbd5e1;
     border: 1px solid #3b455e;
-    padding: 11px 18px;
-    border-radius: 8px;
-    font-size: 0.88rem;
+    padding: 11px 16px;
+    border-radius: 10px;
+    font-size: 0.85rem;
     font-weight: 500;
+    text-decoration: none;
     cursor: pointer;
+    transition: all 0.15s ease;
 }
 
 .btn-secondary:hover {
-    background: #363e54;
+    background: #333d56;
+    color: #ffffff;
 }
 
 /* ==========================================================================
    Responsive Mobile
    ========================================================================== */
 @media (max-width: 768px) {
+    .socials-grid {
+        grid-template-columns: 1fr;
+    }
+
     .popup-content {
         flex-direction: column;
-        padding: 20px;
-        gap: 16px;
+        padding: 22px;
+        gap: 18px;
         text-align: center;
     }
 
@@ -537,58 +730,50 @@ input[type="range"]#volumeSlider::-moz-range-thumb {
     }
 
     .large-qrcode {
-        width: 170px;
-        height: 170px;
-    }
-
-    .foreground {
-        max-width: 95%;
-        max-height: 76%;
+        width: 160px;
+        height: 160px;
     }
 
     .bottom-nav {
-        gap: 4px;
+        gap: 5px;
         padding: 5px 8px;
     }
 
     .nav-btn {
         padding: 6px 10px;
-        font-size: 0.8rem;
-        gap: 5px;
+        font-size: 0.82rem;
     }
 
     .nav-btn-compact {
-        width: 34px;
-        height: 34px;
+        width: 35px;
+        height: 35px;
         padding: 6px;
     }
 
     .volume-slider-box {
-        width: 55px;
+        width: 60px;
     }
 }
 
 @media (max-width: 480px) {
     .bottom-nav {
-        gap: 3px;
+        gap: 4px;
         padding: 4px 6px;
     }
 
     .nav-btn {
-        padding: 6px 8px;
+        padding: 5px 8px;
     }
 
     .nav-label {
-        font-size: 0.75rem;
+        display: none;
     }
 
     .volume-slider-box {
-        width: 48px;
+        width: 45px;
     }
 
     .nav-divider {
         display: none;
     }
 }
-
-

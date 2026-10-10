@@ -1,16 +1,17 @@
 {
   "name": "pigeon-carousel",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Application Pigeon Carousel - Le paradis des pigeons par Pinou007",
   "main": "main.js",
   "author": "Pinou007",
   "license": "MIT",
   "scripts": {
     "start": "electron .",
-    "build:installer": "electron-builder --win nsis",
-    "build:pc": "electron-builder --win nsis",
+    "build:installer": "electron-builder --win nsis zip",
+    "build:pc": "electron-builder --win nsis zip",
+    "build:linux": "electron-builder --linux tar.gz deb",
     "build:mobile": "node build-apk.js",
-    "build:all": "npm run build:pc && npm run build:mobile",
+    "build:all": "npm run build:pc && npm run build:linux && npm run build:mobile",
     "package:pc": "electron-packager . Pigeon --platform=win32 --arch=x64 --icon=img/icon.ico --out=dist --overwrite --prune=true"
   },
   "build": {
@@ -30,7 +31,8 @@
     ],
     "win": {
       "target": [
-        "nsis"
+        "nsis",
+        "zip"
       ],
       "icon": "img/icon.ico"
     },
@@ -40,6 +42,15 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "Pigeon - Pinou007"
+    },
+    "linux": {
+      "target": [
+        "tar.gz",
+        "deb"
+      ],
+      "icon": "img/icon-square.png",
+      "category": "Utility",
+      "description": "Le paradis des pigeons par Pinou007"
     }
   },
   "devDependencies": {

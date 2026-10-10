@@ -1,8 +1,9 @@
 // ==========================================================================
-// Pigeon Carousel - Script Principal
+// Pigeon Carousel - Script Principal avec AFK Auto-Hide & Barre Blanche
+// Auteur: Pinou007
 // ==========================================================================
 
-const TOTAL_IMAGES = 50; // 50 photos réelles de pigeons
+const TOTAL_IMAGES = 50; // 50 photos de pigeons réelles
 let currentImageIndex = 1;
 let carouselInterval = null;
 let isPlaying = true;
@@ -15,6 +16,8 @@ const audio = document.getElementById('backgroundMusic');
 const popup = document.getElementById('popup');
 
 // Éléments de la barre de navigation
+const bottomNavContainer = document.getElementById('bottomNavContainer');
+const bottomNav = document.getElementById('bottomNav');
 const prevBtn = document.getElementById('prevBtn');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const playPauseIcon = document.getElementById('playPauseIcon');
@@ -22,7 +25,6 @@ const nextBtn = document.getElementById('nextBtn');
 const muteBtn = document.getElementById('muteBtn');
 const volumeSlider = document.getElementById('volumeSlider');
 const volumeIcon = document.getElementById('volumeIcon');
-const downloadNavBtn = document.getElementById('downloadNavBtn');
 const contactBtn = document.getElementById('contactBtn');
 
 // Éléments de la modale de contact & toast
@@ -31,6 +33,67 @@ const closeContactModal = document.getElementById('closeContactModal');
 const copyEmailBtn = document.getElementById('copyEmailBtn');
 const copyBtnText = document.getElementById('copyBtnText');
 const toastNotification = document.getElementById('toastNotification');
+
+// ==========================================================================
+// Gestion de l'AFK (Auto-Hide de la barre après inactivité)
+// ==========================================================================
+let afkTimeout = null;
+const AFK_DELAY_MS = 2800; // 2.8 secondes d'inactivité avant masquage
+let isMouseOverNav = false;
+let isInteracting = false;
+
+function showNavAndResetAfk() {
+    if (bottomNavContainer) {
+        bottomNavContainer.classList.remove('afk');
+    }
+    document.body.classList.remove('is-afk');
+
+    if (afkTimeout) {
+        clearTimeout(afkTimeout);
+    }
+
+    afkTimeout = setTimeout(() => {
+        // Ne pas cacher si la souris est sur la barre, ou si une modale/popup est active
+        const isModalOpen = contactModal && contactModal.classList.contains('active');
+        const isPopupOpen = popup && popup.style.display !== 'none';
+
+        if (!isMouseOverNav && !isInteracting && !isModalOpen && !isPopupOpen) {
+            if (bottomNavContainer) {
+                bottomNavContainer.classList.add('afk');
+            }
+            document.body.classList.add('is-afk');
+        }
+    }, AFK_DELAY_MS);
+}
+
+function initAfkManager() {
+    const activityEvents = ['mousemove', 'pointermove', 'mousedown', 'touchstart', 'touchmove', 'keydown', 'wheel'];
+    
+    activityEvents.forEach(evtName => {
+        window.addEventListener(evtName, showNavAndResetAfk, { passive: true });
+    });
+
+    if (bottomNav) {
+        bottomNav.addEventListener('mouseenter', () => {
+            isMouseOverNav = true;
+            showNavAndResetAfk();
+        });
+        bottomNav.addEventListener('mouseleave', () => {
+            isMouseOverNav = false;
+            showNavAndResetAfk();
+        });
+    }
+
+    if (volumeSlider) {
+        volumeSlider.addEventListener('mousedown', () => { isInteracting = true; });
+        volumeSlider.addEventListener('touchstart', () => { isInteracting = true; }, { passive: true });
+        window.addEventListener('mouseup', () => { isInteracting = false; showNavAndResetAfk(); });
+        window.addEventListener('touchend', () => { isInteracting = false; showNavAndResetAfk(); });
+    }
+
+    // Lancer le timer initial
+    showNavAndResetAfk();
+}
 
 // ==========================================================================
 // Gestion du Son et du Volume
@@ -42,42 +105,54 @@ function initAudioControls() {
     if (savedVolume !== null) {
         lastVolume = parseFloat(savedVolume);
     }
-    audio.volume = lastVolume;
-    volumeSlider.value = lastVolume;
+    if (audio) {
+        audio.volume = lastVolume;
+    }
+    if (volumeSlider) {
+        volumeSlider.value = lastVolume;
+    }
     updateVolumeIcon(lastVolume);
 
-    volumeSlider.addEventListener('input', (e) => {
-        const val = parseFloat(e.target.value);
-        audio.volume = val;
-        if (val > 0) {
-            audio.muted = false;
-            lastVolume = val;
-        }
-        localStorage.setItem('pigeon_volume', val);
-        updateVolumeIcon(val);
-        tryPlayAudio();
-    });
+    if (volumeSlider) {
+        volumeSlider.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            if (audio) {
+                audio.volume = val;
+                if (val > 0) {
+                    audio.muted = false;
+                    lastVolume = val;
+                }
+            }
+            localStorage.setItem('pigeon_volume', val);
+            updateVolumeIcon(val);
+            tryPlayAudio();
+        });
+    }
 
-    muteBtn.addEventListener('click', () => {
-        if (audio.muted || audio.volume === 0) {
-            audio.muted = false;
-            const targetVol = lastVolume > 0 ? lastVolume : 0.7;
-            audio.volume = targetVol;
-            volumeSlider.value = targetVol;
-            updateVolumeIcon(targetVol);
-            showToast('Son activé');
-        } else {
-            lastVolume = audio.volume;
-            audio.muted = true;
-            volumeSlider.value = 0;
-            updateVolumeIcon(0);
-            showToast('Son coupé');
-        }
-        tryPlayAudio();
-    });
+    if (muteBtn) {
+        muteBtn.addEventListener('click', () => {
+            if (!audio) return;
+            if (audio.muted || audio.volume === 0) {
+                audio.muted = false;
+                const targetVol = lastVolume > 0 ? lastVolume : 0.7;
+                audio.volume = targetVol;
+                if (volumeSlider) volumeSlider.value = targetVol;
+                updateVolumeIcon(targetVol);
+                showToast('Son activé');
+            } else {
+                lastVolume = audio.volume;
+                audio.muted = true;
+                if (volumeSlider) volumeSlider.value = 0;
+                updateVolumeIcon(0);
+                showToast('Son coupé');
+            }
+            tryPlayAudio();
+        });
+    }
 }
 
 function updateVolumeIcon(vol) {
+    if (!volumeIcon || !audio) return;
     if (audio.muted || vol === 0) {
         volumeIcon.innerHTML = `
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
@@ -99,15 +174,14 @@ function updateVolumeIcon(vol) {
 }
 
 function tryPlayAudio() {
-    if (audio.paused) {
+    if (audio && audio.paused) {
         audio.play().catch(() => {});
     }
 }
 
 // ==========================================================================
-// Gestion du Carrousel d'Images (Robuste avec détection d'erreurs)
+// Gestion du Carrousel d'Images
 // ==========================================================================
-
 function getImagePath(index) {
     return `img/image${index}.jpg`;
 }
@@ -118,29 +192,31 @@ function displayImage(index, animate = true) {
     currentImageIndex = index;
     const newImagePath = getImagePath(currentImageIndex);
 
-    // Préchargeur pour vérifier que l'image charge sans accroc
     const imgLoader = new Image();
     imgLoader.onload = () => {
         loadAttemptCounter = 0;
         if (!animate) {
-            background.style.backgroundImage = `url("${newImagePath}")`;
-            foreground.src = newImagePath;
+            if (background) background.style.backgroundImage = `url("${newImagePath}")`;
+            if (foreground) foreground.src = newImagePath;
             return;
         }
 
-        background.style.opacity = '0.35';
-        foreground.style.opacity = '0';
+        if (background) background.style.opacity = '0.35';
+        if (foreground) foreground.style.opacity = '0';
 
         setTimeout(() => {
-            background.style.backgroundImage = `url("${newImagePath}")`;
-            foreground.src = newImagePath;
-            background.style.opacity = '1';
-            foreground.style.opacity = '1';
-        }, 300);
+            if (background) {
+                background.style.backgroundImage = `url("${newImagePath}")`;
+                background.style.opacity = '1';
+            }
+            if (foreground) {
+                foreground.src = newImagePath;
+                foreground.style.opacity = '1';
+            }
+        }, 280);
     };
 
     imgLoader.onerror = () => {
-        // En cas de pépin sur une image, passe automatiquement à la suivante
         loadAttemptCounter++;
         if (loadAttemptCounter < 5) {
             nextImage();
@@ -205,12 +281,12 @@ function updatePlayPauseButton() {
             <rect x="6" y="4" width="4" height="16"></rect>
             <rect x="14" y="4" width="4" height="16"></rect>
         `;
-        playPauseBtn.title = "Mettre en pause";
+        if (playPauseBtn) playPauseBtn.title = "Mettre en pause";
     } else {
         playPauseIcon.innerHTML = `
             <polygon points="5 3 19 12 5 21 5 3"></polygon>
         `;
-        playPauseBtn.title = "Lancer le défilement";
+        if (playPauseBtn) playPauseBtn.title = "Lancer le défilement";
     }
 }
 
@@ -218,24 +294,28 @@ function updatePlayPauseButton() {
 // Boîte Modale de Contact
 // ==========================================================================
 function openContact() {
+    if (!contactModal) return;
     contactModal.classList.add('active');
     contactModal.setAttribute('aria-hidden', 'false');
+    showNavAndResetAfk();
 }
 
 function closeContact() {
+    if (!contactModal) return;
     contactModal.classList.remove('active');
     contactModal.setAttribute('aria-hidden', 'true');
+    showNavAndResetAfk();
 }
 
 function copyContactEmail() {
     const email = 'contact@pinou007.fr';
     navigator.clipboard.writeText(email).then(() => {
-        copyBtnText.textContent = 'Copié !';
-        copyEmailBtn.classList.add('copied');
+        if (copyBtnText) copyBtnText.textContent = 'Copié !';
+        if (copyEmailBtn) copyEmailBtn.classList.add('copied');
         showToast('Adresse email copiée !');
         setTimeout(() => {
-            copyBtnText.textContent = 'Copier';
-            copyEmailBtn.classList.remove('copied');
+            if (copyBtnText) copyBtnText.textContent = 'Copier';
+            if (copyEmailBtn) copyEmailBtn.classList.remove('copied');
         }, 2500);
     }).catch(() => {
         showToast('contact@pinou007.fr');
@@ -257,22 +337,20 @@ function showToast(message) {
 }
 
 // ==========================================================================
-// Pop-up Téléchargement & Promotionnelle
+// Pop-up Téléchargement
 // ==========================================================================
 function openPopup() {
-    popup.style.display = 'block';
+    if (!popup) return;
+    popup.style.display = 'flex';
+    popup.classList.add('active');
+    showNavAndResetAfk();
 }
 
 function closePopup() {
+    if (!popup) return;
     popup.style.display = 'none';
-}
-
-function showPopupOnce() {
-    const hasSeenPopup = localStorage.getItem('hasSeenPopup');
-    if (!hasSeenPopup && window.innerWidth > 768) {
-        openPopup();
-        localStorage.setItem('hasSeenPopup', 'true');
-    }
+    popup.classList.remove('active');
+    showNavAndResetAfk();
 }
 
 // ==========================================================================
@@ -288,7 +366,6 @@ function attachEventListeners() {
         if (isPlaying) startCarousel();
     });
     if (playPauseBtn) playPauseBtn.addEventListener('click', togglePlayPause);
-    if (downloadNavBtn) downloadNavBtn.addEventListener('click', openPopup);
     if (contactBtn) contactBtn.addEventListener('click', openContact);
 
     // Modale de contact
@@ -299,6 +376,13 @@ function attachEventListeners() {
         });
     }
     if (copyEmailBtn) copyEmailBtn.addEventListener('click', copyContactEmail);
+
+    // Pop-up
+    if (popup) {
+        popup.addEventListener('click', (e) => {
+            if (e.target === popup) closePopup();
+        });
+    }
 
     // Raccourcis clavier
     document.addEventListener('keydown', (e) => {
@@ -312,7 +396,7 @@ function attachEventListeners() {
             prevImage();
             if (isPlaying) startCarousel();
         } else if (e.key === 'm' || e.key === 'M') {
-            muteBtn.click();
+            if (muteBtn) muteBtn.click();
         }
     });
 
@@ -331,12 +415,10 @@ function attachEventListeners() {
 // ==========================================================================
 window.addEventListener('DOMContentLoaded', () => {
     initAudioControls();
+    initAfkManager();
     attachEventListeners();
 
     const initialIndex = getRandomIndex();
     displayImage(initialIndex, false);
     startCarousel();
-    showPopupOnce();
 });
-
-

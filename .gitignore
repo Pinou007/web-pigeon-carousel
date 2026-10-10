@@ -2,5 +2,7 @@ node_modules/
 android/bin/
 android/*.keystore
 dist/installers/win-unpacked/
+dist/installers/win-unpacked.tmp/
+dist/installers/linux-unpacked/
 dist/Pigeon-win32-x64/
 *.log

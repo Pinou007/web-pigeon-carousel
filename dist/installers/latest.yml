@@ -1,8 +1,8 @@
-version: 1.0.0
+version: 1.1.0
 files:
-  - url: Pigeon-Setup-1.0.0.exe
-    sha512: nA3WF9wb+ubEkPzd1ncimjWBWTaU7i2mt4rqChl+CHAFo47OJl+rZBY3VFoptd9eQJcDd8z5l56+AtY+GHA7jg==
-    size: 122063958
-path: Pigeon-Setup-1.0.0.exe
-sha512: nA3WF9wb+ubEkPzd1ncimjWBWTaU7i2mt4rqChl+CHAFo47OJl+rZBY3VFoptd9eQJcDd8z5l56+AtY+GHA7jg==
-releaseDate: '2026-10-04T22:14:38.369Z'
+  - url: Pigeon-Setup-1.1.0.exe
+    sha512: bIdIFxPp2ZmVIPNKaT8N2a40UhjNpqZ4c88p135BHJJMY8ubN2W6dI5YXv98uqKd9F8VTuRXake+kqUhvvLwoQ==
+    size: 122067712
+path: Pigeon-Setup-1.1.0.exe
+sha512: bIdIFxPp2ZmVIPNKaT8N2a40UhjNpqZ4c88p135BHJJMY8ubN2W6dI5YXv98uqKd9F8VTuRXake+kqUhvvLwoQ==
+releaseDate: '2026-10-10T19:25:05.010Z'

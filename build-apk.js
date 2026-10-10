@@ -15,6 +15,19 @@ function run(cmd, opts = {}) {
     cp.execSync(cmd, { stdio: 'inherit', shell: 'cmd.exe', ...opts });
 }
 
+// 0. Synchronize root assets into android/assets
+console.log('--- Step 0: Syncing Web Assets into Android Assets ---');
+fs.mkdirSync('android/assets/img', { recursive: true });
+fs.copyFileSync('index.html', 'android/assets/index.html');
+fs.copyFileSync('style.css', 'android/assets/style.css');
+fs.copyFileSync('script.js', 'android/assets/script.js');
+
+// Copy all images
+const imgFiles = fs.readdirSync('img');
+for (const file of imgFiles) {
+    fs.copyFileSync(path.join('img', file), path.join('android/assets/img', file));
+}
+
 // 1. Prepare directories
 fs.mkdirSync('android/bin/classes', { recursive: true });
 fs.mkdirSync('android/bin/dex', { recursive: true });
